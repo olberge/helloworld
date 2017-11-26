@@ -15,7 +15,6 @@ node('master') {
     }
 
     stage('run-parallel-branches') {
-        steps {
             parallel(
                 a: {
                     echo "This is branch a"
@@ -24,7 +23,6 @@ node('master') {
                     echo "This is branch b"
                 }
             )
-        }
     }
 
     stage('scm-install') {
