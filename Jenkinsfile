@@ -13,4 +13,10 @@ node('master') {
             sh 'mvn test'
         }
     }
+
+    stage('scm-install') {
+        withMaven(jdk: 'JDK 8', maven: 'Default maven') {
+            sh 'mvn test'
+        }
+    }
 }
