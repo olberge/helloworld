@@ -14,6 +14,19 @@ node('master') {
         }
     }
 
+    stage('run-parallel-branches') {
+        steps {
+            parallel(
+                a: {
+                    echo "This is branch a"
+                },
+                b: {
+                    echo "This is branch b"
+                }
+            )
+        }
+    }
+
     stage('scm-install') {
         withMaven(jdk: 'JDK 8', maven: 'Default maven') {
             sh 'mvn test'
