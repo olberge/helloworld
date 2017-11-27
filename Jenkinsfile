@@ -1,7 +1,7 @@
 pipeline {
-    agent any
-
-    checkout scm
+    agent any {
+        checkout scm
+    }
 
     stages{
         stage('scm-compile') {
