@@ -1,15 +1,37 @@
-node('master') {
+pipeline {
+    agent any
+
     checkout scm
 
-    stage('scm-compile') {
-        withMaven(jdk: 'JDK 8', maven: 'Default maven') {
-            sh 'mvn clean compile'
+    stages{
+        stage('scm-compile') {
+            withMaven(jdk: 'JDK 8', maven: 'Default maven') {
+                sh 'mvn clean compile'
+            }
+        }
+
+        stage('scm-test') {
+            withMaven(jdk: 'JDK 8', maven: 'Default maven') {
+                sh 'mvn test'
+            }
         }
     }
-
-    stage('scm-test') {
-        withMaven(jdk: 'JDK 8', maven: 'Default maven') {
-            sh 'mvn test'
+    post {
+        always {
+            echo 'This will always run'
+        }
+        success {
+            echo 'This will run only if successful'
+        }
+        failure {
+            echo 'This will run only if failed'
+        }
+        unstable {
+            echo 'This will run only if the run was marked as unstable'
+        }
+        changed {
+            echo 'This will run only if the state of the Pipeline has changed'
+            echo 'For example, if the Pipeline was previously failing but is now successful'
         }
     }
 }
