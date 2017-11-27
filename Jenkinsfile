@@ -1,18 +1,26 @@
 pipeline {
 
-    agent any
+    agent master
 
     stages{
         stage('scm-compile') {
-            checkout scm
-            withMaven(jdk: 'JDK 8', maven: 'Default maven') {
-                sh 'mvn clean compile'
+            steps {
+                step {
+                    checkout scm
+                    withMaven(jdk: 'JDK 8', maven: 'Default maven') {
+                        sh 'mvn clean compile'
+                    }
+                }
             }
         }
 
         stage('scm-test') {
-            withMaven(jdk: 'JDK 8', maven: 'Default maven') {
-                sh 'mvn test'
+            steps {
+                step {
+                    withMaven(jdk: 'JDK 8', maven: 'Default maven') {
+                        sh 'mvn test'
+                    }
+                }
             }
         }
     }
