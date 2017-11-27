@@ -5,22 +5,18 @@ pipeline {
     stages{
         stage('scm-compile') {
             steps {
-                step {
                     checkout scm
                     withMaven(jdk: 'JDK 8', maven: 'Default maven') {
                         sh 'mvn clean compile'
                     }
-                }
             }
         }
 
         stage('scm-test') {
             steps {
-                step {
                     withMaven(jdk: 'JDK 8', maven: 'Default maven') {
                         sh 'mvn test'
                     }
-                }
             }
         }
     }
