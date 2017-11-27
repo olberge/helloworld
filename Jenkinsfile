@@ -1,10 +1,10 @@
 pipeline {
-    agent any {
-        checkout scm
-    }
+
+    agent any
 
     stages{
         stage('scm-compile') {
+            checkout scm
             withMaven(jdk: 'JDK 8', maven: 'Default maven') {
                 sh 'mvn clean compile'
             }
