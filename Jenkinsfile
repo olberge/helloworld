@@ -1,5 +1,4 @@
 node('master') {
-
     checkout scm
 
     stage('scm-compile') {
