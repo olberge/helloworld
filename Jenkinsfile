@@ -1,4 +1,4 @@
-node('master') {
+node('docker-agent') {
 
     checkout scm
 
