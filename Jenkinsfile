@@ -24,6 +24,7 @@ pipeline {
                     }
                 }
                 stage('Test Branch C') {
+	            agent { label 'ecs-agent' }
                     steps {
                         sh 'sleep 10s'
                     }
@@ -32,7 +33,6 @@ pipeline {
 
         }
         stage('Deploy') {
-            agent { label 'ecs-agent' }
             steps {
                 echo 'Deploying....'
 		withMaven(jdk: 'JDK 8', maven: 'Default maven') {
