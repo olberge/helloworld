@@ -50,7 +50,7 @@ pipeline {
                 echo 'Deploying....'
                 withMaven(jdk: 'JDK 8', maven: 'Default maven') {
                     sh 'mvn site'
-                    sh 'mvn deploy'
+                    /* sh 'mvn deploy' */
                 }
             }
         }
