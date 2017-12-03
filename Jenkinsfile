@@ -8,7 +8,18 @@ pipeline {
                 }
             }
         }
-        stage('Test') {
+        stage('Unit test') {
+            steps {
+                withMaven(jdk: 'JDK 8', maven: 'Default maven') {
+                    sh 'mvn test'
+                    sh 'mvn install'
+                }
+            }
+        }
+        stage('Integration Test') {
+            when {
+                branch 'master'
+            }
             failFast true
             parallel {
                 stage('Test Branch A') {
@@ -30,14 +41,16 @@ pipeline {
                     }
                 }
             }
-
         }
         stage('Deploy') {
+            when {
+                branch 'master'
+            }
             steps {
                 echo 'Deploying....'
                 withMaven(jdk: 'JDK 8', maven: 'Default maven') {
                     sh 'mvn site'
-                    sh 'mvn install'
+                    sh 'mvn deploy'
                 }
             }
         }
