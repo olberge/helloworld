@@ -3,9 +3,9 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-		withMaven(jdk: 'JDK 8', maven: 'Default maven') {
+		            withMaven(jdk: 'JDK 8', maven: 'Default maven') {
                     sh 'mvn clean compile'
-		}
+		            }
             }
         }
         stage('Test') {
@@ -13,9 +13,9 @@ pipeline {
             parallel {
                 stage('Test Branch A') {
                     steps {
-			withMaven(jdk: 'JDK 8', maven: 'Default maven') {
-                    		sh 'mvn test'
-			}
+                        withMaven(jdk: 'JDK 8', maven: 'Default maven') {
+                    		    sh 'mvn test'
+                        }
                     }
                 }
                 stage('Test Branch B') {
@@ -24,7 +24,7 @@ pipeline {
                     }
                 }
                 stage('Test Branch C') {
-	            /* agent { label 'ecs-agent' } */
+	                  /* agent { label 'ecs-agent' } */
                     steps {
                         sh 'sleep 10s'
                     }
@@ -35,11 +35,10 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
-		withMaven(jdk: 'JDK 8', maven: 'Default maven') {
+                withMaven(jdk: 'JDK 8', maven: 'Default maven') {
                     sh 'mvn install'
-		}
+                }
             }
         }
     }
 }
-
