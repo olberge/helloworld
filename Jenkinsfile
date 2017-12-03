@@ -24,7 +24,7 @@ pipeline {
                     }
                 }
                 stage('Test Branch C') {
-	            agent { label 'ecs-agent' }
+	            /* agent { label 'ecs-agent' } */
                     steps {
                         sh 'sleep 10s'
                     }
