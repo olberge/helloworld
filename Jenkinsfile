@@ -1,6 +1,5 @@
 pipeline {
     agent { label 'ecs-agent' }
-    checkout scm
     stages {
         stage('Build') {
             steps {
