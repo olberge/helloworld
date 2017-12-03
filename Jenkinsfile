@@ -1,33 +1,37 @@
-node('ecs-agent') {
-
+pipeline {
+    agent { label 'ecs-agent' }
     checkout scm
-
-    stage('scm-compile') {
-        withMaven(jdk: 'JDK 8', maven: 'Default maven') {
-            sh 'mvn clean compile'
+    stages {
+        stage('Build') {
+            steps {
+		withMaven(jdk: 'JDK 8', maven: 'Default maven') {
+                    sh 'mvn clean compile'
+		}
+            }
         }
-    }
-
-    stage('scm-test') {
-        withMaven(jdk: 'JDK 8', maven: 'Default maven') {
-            sh 'mvn test'
-        }
-    }
-
-    stage('run-parallel-branches') {
-            parallel(
-                a: {
-                    echo "This is branch a"
-                },
-                b: {
-                    echo "This is branch b"
+        stage('Test') {
+            failFast true
+            parallel {
+                stage('Test Branch A') {
+                    steps {
+                        sh 'mvn test'
+                    }
                 }
-            )
-    }
+                stage('Branch B') {
+                    steps {
+                        sh 'mvn test'
+                    }
+                }
+            }
 
-    stage('scm-install') {
-        withMaven(jdk: 'JDK 8', maven: 'Default maven') {
-            sh 'mvn install'
+        }
+        stage('Deploy') {
+            agent { label 'ecs-agent' }
+            steps {
+                echo 'Deploying....'
+                sh 'mvn install'
+            }
         }
     }
 }
+
