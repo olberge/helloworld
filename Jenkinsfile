@@ -3,18 +3,29 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-		            withMaven(jdk: 'JDK 8', maven: 'Default maven') {
+                withMaven(jdk: 'JDK 8', maven: 'Default maven') {
                     sh 'mvn clean compile'
-		            }
+                }
             }
         }
-        stage('Test') {
+        stage('Unit test') {
+            steps {
+                withMaven(jdk: 'JDK 8', maven: 'Default maven') {
+                    sh 'mvn test'
+                    sh 'mvn install'
+                }
+            }
+        }
+        stage('Integration Test') {
+            when {
+                branch 'master'
+            }
             failFast true
             parallel {
                 stage('Test Branch A') {
                     steps {
                         withMaven(jdk: 'JDK 8', maven: 'Default maven') {
-                    		    sh 'mvn test'
+                                sh 'mvn test'
                         }
                     }
                 }
@@ -24,19 +35,22 @@ pipeline {
                     }
                 }
                 stage('Test Branch C') {
-	                  /* agent { label 'ecs-agent' } */
+                    /* agent { label 'ecs-agent' } */
                     steps {
                         sh 'sleep 10s'
                     }
                 }
             }
-
         }
         stage('Deploy') {
+            when {
+                branch 'master'
+            }
             steps {
                 echo 'Deploying....'
                 withMaven(jdk: 'JDK 8', maven: 'Default maven') {
-                    sh 'mvn install'
+                    sh 'mvn site'
+                    sh 'mvn deploy'
                 }
             }
         }
@@ -44,6 +58,8 @@ pipeline {
     post {
         always {
             echo 'This will always run'
+            archive "target/**/*"
+            junit 'target/surefire-reports/*.xml'
         }
         success {
             echo 'This will run only if successful'
