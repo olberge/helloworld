@@ -1,4 +1,4 @@
-node('docker') {
+node('ecs-agent') {
 
     checkout scm
 
