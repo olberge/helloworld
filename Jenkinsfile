@@ -13,12 +13,19 @@ pipeline {
             parallel {
                 stage('Test Branch A') {
                     steps {
-                        sh 'mvn test'
+			withMaven(jdk: 'JDK 8', maven: 'Default maven') {
+                    		sh 'mvn test'
+			}
                     }
                 }
-                stage('Branch B') {
+                stage('Test Branch B') {
                     steps {
-                        sh 'mvn test'
+                        sh 'sleep 15s'
+                    }
+                }
+                stage('Test Branch C') {
+                    steps {
+                        sh 'sleep 10s'
                     }
                 }
             }
@@ -28,7 +35,9 @@ pipeline {
             agent { label 'ecs-agent' }
             steps {
                 echo 'Deploying....'
-                sh 'mvn install'
+		withMaven(jdk: 'JDK 8', maven: 'Default maven') {
+                    sh 'mvn install'
+		}
             }
         }
     }
