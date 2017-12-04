@@ -33,6 +33,7 @@ pipeline {
                 stage('Test Branch B') {
                     steps {
                         sh 'sleep 15s'
+                        echo 'Sleep 15s'
                     }
                 }
                 stage('Test Branch C') {
