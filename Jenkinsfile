@@ -26,7 +26,7 @@ pipeline {
                     steps {
                         withMaven(jdk: 'JDK 8', maven: 'Default maven') {
                                 echo 'This is test'
-                                sh 'mvn test'
+                                /* sh 'mvn test' */
                         }
                     }
                 }
