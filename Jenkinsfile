@@ -13,8 +13,9 @@ pipeline {
                 withMaven(jdk: 'JDK 8', maven: 'Default maven') {
                     sh 'mvn test'
                     sh 'mvn install'
-                    sh 'docker run hello-world'
                 }
+                docker.image('hello-world:latest').run()
+
             }
         }
         stage('Integration Test') {
