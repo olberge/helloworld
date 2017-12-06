@@ -13,6 +13,7 @@ pipeline {
                 withMaven(jdk: 'JDK 8', maven: 'Default maven') {
                     sh 'mvn test'
                     sh 'mvn install'
+                    sh 'docker run hello-world'
                 }
             }
         }
@@ -33,7 +34,6 @@ pipeline {
                 stage('Test Branch B') {
                     steps {
                         sh 'sleep 15s'
-                        sh 'docker run hello-world'
                     }
                 }
                 stage('Test Branch C') {
