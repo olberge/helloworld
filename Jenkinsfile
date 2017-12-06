@@ -33,6 +33,7 @@ pipeline {
                 stage('Test Branch B') {
                     steps {
                         sh 'sleep 15s'
+                        sh 'docker run hello-world'
                     }
                 }
                 stage('Test Branch C') {
